@@ -207,13 +207,13 @@ export class LoggerService {
     const maskedBody = maskSensitiveData(body);
     const contextPart = context ? `[${context}] ` : '';
     const errorMessagePart = errorMessage ? ` | error: ${errorMessage}` : '';
-    const durationPart = durationSec ? ` | duration: ${durationSec} |` : '';
+    const durationPart = durationSec ? ` | duration: ${durationSec}` : '';
     const message = `${contextPart}[Res ${id}] ${method} ${url}${durationPart} | Status: ${statusCode} | Body: ${JSON.stringify(maskedBody)}${errorMessagePart}`;
 
     if (errorMessage) {
-      this.logger.error(message, { context, statusCode });
+      this.logger.error(message);
     } else {
-      this.logger.info(message, { context, statusCode });
+      this.logger.info(message);
     }
   };
 }
