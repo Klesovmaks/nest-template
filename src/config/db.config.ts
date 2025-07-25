@@ -1,7 +1,8 @@
 import { registerAs } from '@nestjs/config';
+import { Dialect } from 'sequelize';
 
 export interface DBConfig {
-  readonly dialect: string;
+  readonly dialect: Dialect;
   readonly host: string;
   readonly port: number;
   readonly username: string;

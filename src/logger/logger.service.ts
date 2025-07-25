@@ -8,7 +8,10 @@ import {
 import * as DailyRotateFile from 'winston-daily-rotate-file';
 import { LoggerResponse } from './interface/loggerResponse.interface';
 import { LoggerRequest } from './interface/loggerRequest.interface';
-import { SENSITIVE_KEYS } from 'src/common/utils/constants';
+import {
+  REDACTED_PLACEHOLDER,
+  SENSITIVE_KEYS,
+} from 'src/common/utils/constants';
 
 const { combine, timestamp, printf, errors, align } = format;
 
@@ -35,22 +38,6 @@ const customFormat = printf(
     return `${ts} [${level}] ${ctx}${msg}${stack}`;
   },
 );
-
-/**
- * Маскирует строковое значение, скрывая часть символов, чтобы защитить чувствительные данные.
- * Если длина строки больше 6 символов, возвращает строку с первым и последним символом,
- * между которыми ставятся "***".
- * Иначе возвращает строку '***REDACTED***'.
- *
- * @param {string} value - Исходное чувствительное строковое значение для маскировки.
- * @returns {string} - Маскированное значение.
- */
-function maskValue(value: string): string {
-  if (!value) return '***REDACTED***';
-  return value.length > 6
-    ? value[0] + '***' + value.slice(-1)
-    : '***REDACTED***';
-}
 
 /**
  * Рекурсивно проходит по объекту или массиву и маскирует чувствительные данные,
@@ -84,8 +71,7 @@ function maskSensitiveData(
     const value = dataObj[key];
 
     if (SENSITIVE_KEYS.has(key.toLowerCase())) {
-      masked[key] =
-        typeof value === 'string' ? maskValue(value) : '***REDACTED***';
+      masked[key] = REDACTED_PLACEHOLDER;
     } else if (value && typeof value === 'object') {
       masked[key] = maskSensitiveData(value, seen);
     } else {
