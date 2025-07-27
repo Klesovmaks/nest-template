@@ -4,7 +4,7 @@ import {
   ExecutionContext,
   CallHandler,
 } from '@nestjs/common';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { Request, Response } from 'express';
 import { LoggerFactory } from 'src/logger/logger.factory';
 import { generateRandomCode } from 'src/common/utils/helpers';
@@ -93,6 +93,27 @@ export class LoggerInterceptor implements NestInterceptor {
           body: loggedBody,
           durationSec,
         });
+      }),
+      catchError((error) => {
+        const durationMs = Date.now() - startTime;
+        const durationSec = durationMs / 1000;
+
+        const errorBody =
+          error?.response ??
+          error?.message ??
+          (typeof error === 'string' ? error : 'Неизвестная ошибка');
+
+        logger.formatResponseLog({
+          id,
+          method,
+          url: originalUrl,
+          statusCode: error?.status ?? 500,
+          body: errorBody,
+          durationSec,
+        });
+
+        // Пробрасываем ошибку дальше, чтобы NestJS мог её обработать
+        return throwError(() => error as unknown);
       }),
     );
   }

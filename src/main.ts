@@ -5,6 +5,13 @@ import { LoggerService } from './logger/logger.service';
 import { ConfigService } from '@nestjs/config';
 import { AppConfig } from './config/app.config';
 import { DBConfig } from './config/db.config';
+import { JWTConfig } from './config/jwt.config';
+import {
+  BadRequestException,
+  ValidationError,
+  ValidationPipe,
+} from '@nestjs/common';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 
 async function bootstrap() {
   // Создаем NestJS приложение на основе корневого модуля
@@ -25,6 +32,7 @@ async function bootstrap() {
     const configs = {
       app: appConfig,
       db: configService.getOrThrow<DBConfig>('db'),
+      jwt: configService.getOrThrow<JWTConfig>('jwt'),
     };
     // Красивый вывод с отступами для удобства чтения
     logger.info(`Environment variables: ${JSON.stringify(configs, null, 2)}`);
@@ -35,6 +43,25 @@ async function bootstrap() {
     // Исключаем маршруты Bull Board из префикса, чтобы они работали напрямую
     exclude: ['/bull-board', '/bull-board/*path'],
   });
+
+  // Глобальные фильтры, пайпы и интерсепторы
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+      exceptionFactory: (errors: ValidationError[]) => {
+        const messages = errors
+          .map((err) =>
+            err.constraints ? Object.values(err.constraints).join(', ') : '',
+          )
+          .filter((msg) => msg !== '')
+          .join('; ');
+        return new BadRequestException(messages);
+      },
+    }),
+  );
+  app.useGlobalInterceptors(new ResponseInterceptor());
 
   // Устанавливаем ограничение размера тела запроса, берем из конфигурации и добавляем единицу измерения 'mb'
   const bodyLimit = `${appConfig.bodyLimit}mb`;

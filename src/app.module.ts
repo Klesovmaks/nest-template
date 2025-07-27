@@ -5,6 +5,11 @@ import configs from './config';
 import { configValidationSchema } from './config/configValidateSchema';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { DBConfig } from './config/db.config';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggerInterceptor } from './logger/interceptors/logger.interceptor';
+import { AllExceptionsFilter } from './common/filter/all-exception.filter';
 
 @Module({
   imports: [
@@ -26,8 +31,19 @@ import { DBConfig } from './config/db.config';
         configService.getOrThrow<DBConfig>('db'),
     }),
     LoggerModule,
+    UserModule,
+    AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggerInterceptor,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+  ],
 })
 export class AppModule {}

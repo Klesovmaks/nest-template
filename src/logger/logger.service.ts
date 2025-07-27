@@ -102,7 +102,7 @@ export class LoggerService {
    */
   constructor(
     private context: string,
-    private logDir = 'api',
+    logDir = 'api',
   ) {
     const fileTransport = new DailyRotateFile({
       dirname: `logs/${logDir}`,

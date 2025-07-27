@@ -27,5 +27,5 @@ export const SENSITIVE_KEYS = new Set([
   'filecontent',
   'imagedata',
 ]);
-
 export const REDACTED_PLACEHOLDER = '***REDACTED***';
+export const SALT_ROUNDS = 12;
