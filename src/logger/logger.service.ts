@@ -12,6 +12,8 @@ import {
   REDACTED_PLACEHOLDER,
   SENSITIVE_KEYS,
 } from 'src/common/utils/constants';
+import { ConfigService } from '@nestjs/config';
+import { AppConfig } from 'src/config/app.config';
 
 const { combine, timestamp, printf, errors, align } = format;
 
@@ -95,6 +97,7 @@ function maskSensitiveData(
 @Injectable({ scope: Scope.TRANSIENT })
 export class LoggerService {
   private logger: WinstonLogger;
+  private appConfig: AppConfig;
 
   /**
    * @param context - Контекст логгера (например, имя модуля или компонента).
@@ -103,14 +106,17 @@ export class LoggerService {
   constructor(
     private context: string,
     logDir = 'api',
+    readonly configService: ConfigService,
   ) {
+    this.appConfig = configService.getOrThrow<AppConfig>('app');
+
     const fileTransport = new DailyRotateFile({
       dirname: `logs/${logDir}`,
       filename: `%DATE%.log`,
       datePattern: 'YYYY-MM-DD',
       zippedArchive: true,
-      maxSize: '50m',
-      maxFiles: '120d',
+      maxSize: this.appConfig.log.maxSize,
+      maxFiles: this.appConfig.log.maxRetentionDays,
       level: 'debug',
       format: combine(
         timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),

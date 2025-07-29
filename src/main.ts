@@ -17,11 +17,11 @@ async function bootstrap() {
   // Создаем NestJS приложение на основе корневого модуля
   const app = await NestFactory.create(AppModule);
 
-  // Инициализируем пользовательский логгер (можно заменить на глобальный, если требуется)
-  const logger = new LoggerService('service', 'api');
-
   // Получаем сервис конфигурации NestJS
   const configService = app.get(ConfigService);
+
+  // Инициализируем пользовательский логгер (можно заменить на глобальный, если требуется)
+  const logger = new LoggerService('service', 'api', configService);
 
   // Извлекаем конфигурацию приложения с гарантией наличия (getOrThrow выбросит ошибку, если конфиг не найден)
   const appConfig = configService.getOrThrow<AppConfig>('app');

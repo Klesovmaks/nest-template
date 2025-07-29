@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { LoggerService } from './logger.service';
+import { ConfigService } from '@nestjs/config';
 
 /**
  * Фабрика для создания и кэширования экземпляров LoggerService.
@@ -18,6 +19,8 @@ export class LoggerFactory {
    */
   private loggers = new Map<string, LoggerService>();
 
+  constructor(private configService: ConfigService) {}
+
   /**
    * Возвращает экземпляр LoggerService с заданным контекстом и директорией логов.
    * Если логгер с таким ключом не создан, создаёт новый и добавляет в кэш.
@@ -31,7 +34,7 @@ export class LoggerFactory {
     let logger = this.loggers.get(key);
     if (!logger) {
       // Создание нового экземпляра LoggerService с контекстом и директорией
-      logger = new LoggerService(context, logDir);
+      logger = new LoggerService(context, logDir, this.configService);
       // Сохранение в кэш
       this.loggers.set(key, logger);
     }

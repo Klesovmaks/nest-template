@@ -11,6 +11,8 @@ export const configValidationSchema = Joi.object({
     })
     .required(),
   API_BODY_LIMIT: Joi.string().required(),
+  LOG_FILE_MAX_SIZE: Joi.number(),
+  LOG_FILE_MAX_RETENTION_DAYS: Joi.number(),
   PG_HOST: Joi.string().required(),
   PG_PORT: Joi.number().required(),
   PG_USER: Joi.string().required(),
