@@ -31,8 +31,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const errorResponse = isHttpException ? exception.getResponse() : null;
 
     // Инициализируем дефолтные значения сообщения и ошибки
-    let error = 'Внутренняя ошибка сервера';
-    let message: string | string[] = 'Внутренняя ошибка сервера';
+    let error = 'Неизвестная ошибка';
+    let message: string | string[] = 'Непредвиденная ошибка на сервере';
 
     // Если response из исключения — строка, используем её и как error, и как message
     if (typeof errorResponse === 'string') {
@@ -50,15 +50,14 @@ export class AllExceptionsFilter implements ExceptionFilter {
     } else if (!isHttpException) {
       if (exception instanceof Error && exception.message) {
         error = exception.message;
-        message = exception.message;
       }
     }
 
     // Формируем единый ответ клиенту с полями statusCode, error и message
     const responseBody = {
+      message,
       statusCode: status,
       error,
-      message,
     };
 
     // Формируем строку с деталями запроса для логов: HTTP метод и URL

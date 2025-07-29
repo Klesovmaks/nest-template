@@ -95,6 +95,7 @@ export class LoggerInterceptor implements NestInterceptor {
         });
       }),
       catchError((error) => {
+        // Вычисляем длительность обработки запроса в секундах
         const durationMs = Date.now() - startTime;
         const durationSec = durationMs / 1000;
 

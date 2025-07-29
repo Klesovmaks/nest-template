@@ -5,7 +5,6 @@ export class ResponseDto<T> {
     description: 'Сообщение',
     type: String,
   })
-  @ApiProperty()
   readonly message: string;
 
   @ApiProperty({
@@ -14,6 +13,17 @@ export class ResponseDto<T> {
   })
   readonly statusCode: number;
 
-  @ApiProperty()
-  readonly data: T;
+  @ApiProperty({
+    description: 'Данные ответа',
+    type: Object,
+    required: false,
+  })
+  readonly data?: T;
+
+  @ApiProperty({
+    description: 'Описание ошибки',
+    type: String,
+    required: false,
+  })
+  readonly error?: string;
 }

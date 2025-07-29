@@ -9,8 +9,8 @@ import { map, Observable } from 'rxjs';
 import { RESPONSE_MESSAGE } from '../decorator/response-message.decorator';
 
 export interface Response<T> {
-  statusCode: number;
   message: string;
+  statusCode: number;
   data: T;
 }
 

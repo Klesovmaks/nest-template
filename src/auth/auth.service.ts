@@ -7,6 +7,8 @@ import { RefreshTokenRequestDto } from './dto/refresh-token.request.dto';
 import { JWTConfig } from 'src/config/jwt.config';
 import { ConfigService } from '@nestjs/config';
 import { SALT_ROUNDS } from 'src/common/utils/constants';
+import { UserPayload } from './interface/user-payload.interface';
+import { InvalidCredentialsException } from './exceptions/invalid-credentials.exception';
 
 @Injectable()
 export class AuthService {
@@ -23,13 +25,16 @@ export class AuthService {
     const { login, password } = dto;
 
     const user = await this.userService.findByLogin(login);
-    if (!user) throw new UnauthorizedException('Invalid credentials');
+    if (!user) throw new InvalidCredentialsException();
 
     const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
-    if (!isPasswordValid)
-      throw new UnauthorizedException('Invalid credentials');
+    if (!isPasswordValid) throw new InvalidCredentialsException();
 
-    const payload = { username: user.login, sub: user.id, role: user.role };
+    const payload: UserPayload = {
+      login: user.login,
+      userId: user.id,
+      role: user.role,
+    };
 
     const accessToken = this.jwtService.sign(payload, {
       expiresIn: this.jwtConfig.accessTokenExpires,
@@ -64,7 +69,11 @@ export class AuthService {
     if (!isRefreshTokenMatching)
       throw new UnauthorizedException('Access denied');
 
-    const payload = { username: user.login, sub: user.id, role: user.role };
+    const payload: UserPayload = {
+      login: user.login,
+      userId: user.id,
+      role: user.role,
+    };
     const newAccessToken = this.jwtService.sign(payload, {
       expiresIn: this.jwtConfig.accessTokenExpires,
     });
