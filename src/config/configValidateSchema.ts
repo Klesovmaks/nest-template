@@ -11,11 +11,14 @@ export const configValidationSchema = Joi.object({
     })
     .required(),
   API_BODY_LIMIT: Joi.string().required(),
-  LOG_FILE_MAX_SIZE: Joi.number(),
-  LOG_FILE_MAX_RETENTION_DAYS: Joi.number(),
+  LOG_FILE_MAX_SIZE: Joi.number().required(),
+  LOG_FILE_MAX_RETENTION_DAYS: Joi.number().required(),
   PG_HOST: Joi.string().required(),
   PG_PORT: Joi.number().required(),
   PG_USER: Joi.string().required(),
   PG_PASSWORD: Joi.string().required(),
   PG_DB: Joi.string().required(),
+  JWT_SECRET: Joi.string().required(),
+  JWT_ACCESS_TOKEN_EXPIRES: Joi.number().required(),
+  JWT_REFRESH_TOKEN_EXPIRES: Joi.number().required(),
 });
