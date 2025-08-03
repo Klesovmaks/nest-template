@@ -1,16 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class ResponseDto<T> {
   @ApiProperty({
     description: 'Сообщение',
     type: String,
   })
+  @IsString()
   readonly message: string;
 
   @ApiProperty({
     description: 'Код ответа',
     type: Number,
   })
+  @IsNumber()
   readonly statusCode: number;
 
   @ApiProperty({
@@ -18,6 +21,7 @@ export class ResponseDto<T> {
     type: Object,
     required: false,
   })
+  @IsOptional()
   readonly data?: T;
 
   @ApiProperty({
@@ -25,5 +29,6 @@ export class ResponseDto<T> {
     type: String,
     required: false,
   })
+  @IsOptional()
   readonly error?: string;
 }

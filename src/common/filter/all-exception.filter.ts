@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 
-@Catch() // Декоратор говорит, что фильтр ловит все исключения (любой тип)
+@Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   // Встроенный логгер NestJS с контекстом имени фильтра
   private readonly logger = new Logger(AllExceptionsFilter.name);

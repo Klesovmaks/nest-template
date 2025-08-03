@@ -25,8 +25,8 @@ export class LoggerFactory {
    * Возвращает экземпляр LoggerService с заданным контекстом и директорией логов.
    * Если логгер с таким ключом не создан, создаёт новый и добавляет в кэш.
    *
-   * @param {string} context - Контекст логгера (например, название модуля или компонента).
-   * @param {string} [logDir='api'] - Папка для хранения логов (по умолчанию 'api').
+   * @param {string} context - Контекст логгера (например, название модуля или компонента)
+   * @param {string} [logDir='api'] - Папка для хранения логов (по умолчанию 'api')
    * @returns {LoggerService}
    */
   getLogger(context: string, logDir: string = 'api'): LoggerService {

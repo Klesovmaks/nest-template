@@ -7,7 +7,7 @@ export class UserService {
   constructor(@InjectModel(User) private user: typeof User) {}
 
   /**
-   * Поиск пользователя по идентификатору
+   * Поиск пользователя по идентификатору.
    *
    * @async
    * @param {string} id - Идентификатор пользователя
@@ -18,7 +18,7 @@ export class UserService {
   }
 
   /**
-   * Поиск пользователя по логину
+   * Поиск пользователя по логину.
    *
    * @async
    * @param {string} login - Логин пользователя
@@ -29,10 +29,10 @@ export class UserService {
   }
 
   /**
-   * Запись refreshTokenHash
+   * Запись refreshTokenHash.
    *
    * @async
-   * @param {string} refreshTokenHash - хэш рефреш токена
+   * @param {string} refreshTokenHash - Хэш refresh токена
    * @param {string} userId - Идентификатор пользователя
    * @returns {Promise<void>}
    */
@@ -44,7 +44,7 @@ export class UserService {
   }
 
   /**
-   * Удаление refreshTokenHash
+   * Удаление refreshTokenHash.
    *
    * @async
    * @param {string} userId - Идентификатор пользователя

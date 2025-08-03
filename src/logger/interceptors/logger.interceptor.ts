@@ -30,9 +30,9 @@ export class LoggerInterceptor implements NestInterceptor {
    * замеряет время обработки запроса,
    * и маскирует содержимое тела в случае бинарных PDF.
    *
-   * @param {ExecutionContext} context  - Контекст выполнения запроса NestJS.
-   * @param {CallHandler} next - Следующий обработчик в цепочке.
-   * @returns {Observable<any>} - Поток результата с дополнительным побочным эффектом логирования.
+   * @param {ExecutionContext} context  - Контекст выполнения запроса NestJS
+   * @param {CallHandler} next - Следующий обработчик в цепочке
+   * @returns {Observable<any>} - Поток результата с дополнительным побочным эффектом логирования
    */
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     // Получаем объект HTTP запроса и ответа из контекста

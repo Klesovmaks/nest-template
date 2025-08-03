@@ -19,6 +19,6 @@ export const configValidationSchema = Joi.object({
   PG_PASSWORD: Joi.string().required(),
   PG_DB: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
-  JWT_ACCESS_TOKEN_EXPIRES: Joi.number().required(),
-  JWT_REFRESH_TOKEN_EXPIRES: Joi.number().required(),
+  JWT_ACCESS_TOKEN_EXPIRES: Joi.number().integer().positive().required(),
+  JWT_REFRESH_TOKEN_EXPIRES: Joi.number().integer().positive().required(),
 });

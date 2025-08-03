@@ -6,8 +6,8 @@ import {
   transports,
 } from 'winston';
 import * as DailyRotateFile from 'winston-daily-rotate-file';
-import { LoggerResponse } from './interface/loggerResponse.interface';
-import { LoggerRequest } from './interface/loggerRequest.interface';
+import { LoggerResponse } from './interface/logger-response.interface';
+import { LoggerRequest } from './interface/logger-request.interface';
 import {
   REDACTED_PLACEHOLDER,
   SENSITIVE_KEYS,
@@ -49,9 +49,9 @@ const customFormat = printf(
  *
  * Обрабатывает вложенные объекты и массивы, предотвращая бесконечную рекурсию через параметр `seen`.
  *
- * @param {unknown} data - Входные данные для маскировки, могут быть любого типа.
- * @param {WeakSet<object>} [seen=new WeakSet()] - Множество уже обработанных объектов для обхода циклических ссылок.
- * @returns {unknown} Маскированная версия входных данных с сохранением структуры.
+ * @param {unknown} data - Входные данные для маскировки, могут быть любого типа
+ * @param {WeakSet<object>} [seen=new WeakSet()] - Множество уже обработанных объектов для обхода циклических ссылок
+ * @returns {unknown} Маскированная версия входных данных с сохранением структуры
  */
 function maskSensitiveData(
   data: unknown,
@@ -100,8 +100,8 @@ export class LoggerService {
   private appConfig: AppConfig;
 
   /**
-   * @param context - Контекст логгера (например, имя модуля или компонента).
-   * @param logDir - Директория для хранения логов (по умолчанию 'api').
+   * @param context - Контекст логгера (например, имя модуля или компонента)
+   * @param logDir - Директория для хранения логов (по умолчанию 'api')
    */
   constructor(
     private context: string,
