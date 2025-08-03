@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import { LoginRequestDto } from './dto/login.request.dto';
@@ -51,7 +51,9 @@ export class AuthService {
 
     return {
       accessToken,
+      accessTokenExpires: this.jwtConfig.accessTokenExpires,
       refreshToken,
+      refreshTokenExpires: this.jwtConfig.refreshTokenExpires,
     };
   }
 
@@ -60,14 +62,13 @@ export class AuthService {
 
     const user = await this.userService.findById(userId);
     if (!user || !user.refreshTokenHash)
-      throw new UnauthorizedException('Access denied');
+      throw new InvalidCredentialsException();
 
     const isRefreshTokenMatching = await bcrypt.compare(
       refreshToken,
       user.refreshTokenHash,
     );
-    if (!isRefreshTokenMatching)
-      throw new UnauthorizedException('Access denied');
+    if (!isRefreshTokenMatching) throw new InvalidCredentialsException();
 
     const payload: UserPayload = {
       login: user.login,

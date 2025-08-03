@@ -8,6 +8,6 @@ export interface JWTConfig {
 
 export default registerAs('jwt', () => ({
   secret: process.env.JWT_SECRET,
-  accessTokenExpires: process.env.JWT_ACCESS_TOKEN_EXPIRES + 'm',
-  refreshTokenExpires: process.env.JWT_REFRESH_TOKEN_EXPIRES + 'd',
+  accessTokenExpires: process.env.JWT_ACCESS_TOKEN_EXPIRES,
+  refreshTokenExpires: process.env.JWT_REFRESH_TOKEN_EXPIRES,
 }));

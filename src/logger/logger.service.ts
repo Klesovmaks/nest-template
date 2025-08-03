@@ -115,8 +115,8 @@ export class LoggerService {
       filename: `%DATE%.log`,
       datePattern: 'YYYY-MM-DD',
       zippedArchive: true,
-      maxSize: this.appConfig.log.maxSize,
-      maxFiles: this.appConfig.log.maxRetentionDays,
+      maxSize: `${this.appConfig.log.maxSize}m`,
+      maxFiles: `${this.appConfig.log.maxRetentionDays}d`,
       level: 'debug',
       format: combine(
         timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),

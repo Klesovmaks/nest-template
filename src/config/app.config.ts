@@ -15,7 +15,7 @@ export default registerAs('app', () => ({
   key: process.env.API_KEY,
   bodyLimit: process.env.API_BODY_LIMIT,
   log: {
-    maxSize: process.env.LOG_FILE_MAX_SIZE + 'm',
-    maxRetentionDays: process.env.LOG_FILE_MAX_RETENTION_DAYS + 'd',
+    maxSize: process.env.LOG_FILE_MAX_SIZE,
+    maxRetentionDays: process.env.LOG_FILE_MAX_RETENTION_DAYS,
   },
 }));
