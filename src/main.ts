@@ -10,6 +10,7 @@ import {
   BadRequestException,
   ValidationError,
   ValidationPipe,
+  VersioningType,
 } from '@nestjs/common';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 
@@ -69,6 +70,12 @@ async function bootstrap() {
   // Настраиваем парсеры тела запросов Express с нужным лимитом
   app.use(json({ limit: bodyLimit }));
   app.use(urlencoded({ extended: true, limit: bodyLimit }));
+
+  // Версионирование API
+  app.enableVersioning({
+    type: VersioningType.URI, // версия в URI, например /v1/users
+    defaultVersion: '1',
+  });
 
   // Включаем отслеживание системных сигналов для graceful shutdown
   app.enableShutdownHooks();
