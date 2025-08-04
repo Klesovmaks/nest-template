@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggerInterceptor } from './logger/interceptors/logger.interceptor';
 import { AllExceptionsFilter } from './common/filter/all-exception.filter';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AllExceptionsFilter } from './common/filter/all-exception.filter';
     LoggerModule,
     UserModule,
     AuthModule,
+    HealthModule,
   ],
   controllers: [],
   providers: [

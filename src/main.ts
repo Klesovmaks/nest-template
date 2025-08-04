@@ -70,6 +70,9 @@ async function bootstrap() {
   app.use(json({ limit: bodyLimit }));
   app.use(urlencoded({ extended: true, limit: bodyLimit }));
 
+  // Включаем отслеживание системных сигналов для graceful shutdown
+  app.enableShutdownHooks();
+
   // Запуск HTTP сервера на порту из конфигурации
   await app.listen(appConfig.port, () =>
     logger.info(`Server started on port = ${appConfig.port}`),

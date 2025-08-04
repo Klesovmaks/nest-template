@@ -29,7 +29,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     // Получаем из исключения тело с деталями (строка или объект) или null
     const errorResponse = isHttpException ? exception.getResponse() : null;
-
+    console.log(errorResponse);
     // Инициализируем дефолтные значения сообщения и ошибки
     let error = 'Неизвестная ошибка';
     let message: string | string[] = 'Непредвиденная ошибка на сервере';
@@ -53,12 +53,21 @@ export class AllExceptionsFilter implements ExceptionFilter {
       }
     }
 
+    // Определяем, что запрос к health check (по пути /health или другому)
+    const isHealthCheck = request.url.includes('/health');
+
     // Формируем единый ответ клиенту с полями statusCode, error и message
-    const responseBody = {
-      message,
-      statusCode: status,
-      error,
-    };
+    const responseBody = isHealthCheck
+      ? {
+          message: 'Ошибка проверки',
+          statusCode: status,
+          data: errorResponse,
+        }
+      : {
+          message,
+          statusCode: status,
+          error,
+        };
 
     // Формируем строку с деталями запроса для логов: HTTP метод и URL
     const reqDetails = `[${request.method}] ${request.url}`;
